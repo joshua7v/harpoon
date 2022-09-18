@@ -58,7 +58,11 @@ end
 local function get_buf_name(id)
     log.trace("_get_buf_name():", id)
     if id == nil then
-        return utils.normalize_path(vim.api.nvim_buf_get_name(0))
+        if (vim.fn.has("win32")) then
+            return utils.normalize_path(vim.api.nvim_buf_get_name(0):gsub("/", "\\"))
+        else
+            return utils.normalize_path(vim.api.nvim_buf_get_name(0))
+        end
     elseif type(id) == "string" then
         return utils.normalize_path(id)
     end
